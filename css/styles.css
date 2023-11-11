@@ -8331,10 +8331,13 @@ fieldset:disabled .btn {
 
 .bg-primary {
   --bs-bg-opacity: 1;
-  background-color: rgba(
+  /* background-color: rgba(
     var(--bs-primary-rgb),
     var(--bs-bg-opacity)
-  ) !important;
+  ) !important; */
+  background-image: url("../logo/1.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 .bg-secondary {

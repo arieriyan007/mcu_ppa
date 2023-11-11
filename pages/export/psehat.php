@@ -18,7 +18,7 @@
     </center>
 
 <center>
-    <h4>testing</h4>
+    <h4>SURAT KETERANGAN SEHAT</h4>
 </center>
     
 <center>
