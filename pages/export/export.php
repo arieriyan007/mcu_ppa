@@ -99,8 +99,6 @@ $(document).ready(function() {
 <script src="https://cdn.datatables.net/buttons/1.6.5/js/buttons.html5.min.js"></script>
 <script src="https://cdn.datatables.net/buttons/1.6.5/js/buttons.print.min.js"></script>
 
-	
-
 </body>
 
 </html>
