@@ -188,7 +188,7 @@ include "../layouts/header.php";
                                             <td><?= $jk; ?></td>
                                             <td>
                                               <!-- button print -->
-                                            <a href="export/psehat.php?id=<?= $idk; ?>" class="btn btn-primary btn-sm" target="_blank"><i class="fas fa-print"></i> print</a>
+                                            <a href="export/psehat2.php?id=<?= $idk; ?>" class="btn btn-primary btn-sm" target="_blank"><i class="fas fa-print"></i> print</a>
                                             <!-- button hapus -->
                                             <button type="button" class="btn btn-danger btn-sm my-1" data-bs-toggle="modal" data-bs-target="#myDelete<?= $idk; ?>" title="Delete data">
                                              <i class="fas fa-backspace"></i> Delete
