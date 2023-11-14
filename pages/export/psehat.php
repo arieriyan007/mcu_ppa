@@ -14,10 +14,21 @@ $idkaryawan = $_GET['id'];
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css">
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css">
 
+
 <!-- css body -->
 <style>
-* {
-    box-sizing: border-box;
+ .text-container {
+    max-width: 25cm;
+    margin: 0;
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+.page-container {
+    border: 2px solid #000;
+    max-width: 25cm;
+    margin: 0 auto;
+    padding: 0;
 }
 
 body {
@@ -26,71 +37,37 @@ body {
     align-items: center;
     min-height: 100vh;
     margin: 0;
+
 }
-
-.page-container {
-    border: 2px solid #000;
-    padding-top: -5px;
-    padding-bottom: -5px;
-    padding-left: 7px; /* Ganti nilai ini sesuai kebutuhan Anda */
-    padding-right: 0px; /* Ganti nilai ini sesuai kebutuhan Anda */
-    max-width: 25cm;
-    margin: 0 auto;
-    position: relative;
-    z-index: -1;
-}
-
-
-
 .centered-content p {
-    margin: 0;
-    line-height: 1.2; /* Sesuaikan dengan kebutuhan Anda */
+    margin: 0px;
+    padding-left: 0px;
+    line-height: 1.2; 
 }
 
 .centered-content table {
-    margin-top: 8px;
+    margin-top: 0px;
     border-collapse: collapse; /* Tambahkan ini agar border di dalam tabel tidak memengaruhi ukuran */
 }
-
-.custom-carousel {
-    max-width: 90%;
-    margin: 0px;
-}
-
-.carousel-item {
-    padding: 0px;
-}
-
-.slick-slider {
-    max-width: 100%;
-}
-
 .carousel-title {
     font-family: 'Times New Roman', Times, serif;
     text-align: center;
 }
-
-.carousel-item img {
-    filter: brightness(0.5);
-    transition: filter 0.3s;
-    width: 90px;
-    height: 100px;
+.footer-image {
+    padding-left: 0px; 
+    padding-right: 0; 
+    margin-bottom: 0px;
+    margin-top: 0px;
+    margin-left: 0px;
+    text-align: right; /* Menambahkan aturan ini untuk memastikan gambar berada di pojok kanan */
 }
-
-.carousel-item img:hover {
-    filter: brightness(1);
-}
-
-.slick-dots {
-    position: absolute;
-    bottom: 30px;
-    left: 50%;
-    transform: translateX(-50%);
-    list-style: none;
-}
-
-.slick-prev, .slick-next {
-    display: none;
+.header-logo {
+    padding-left: 0px; 
+    padding-right: 0; 
+    margin-bottom: 0px;
+    margin-top: 0px;
+    margin-left: 0px;
+    text-align: right; /* Menambahkan aturan ini untuk memastikan gambar berada di pojok kanan */
 }
 @media print {
     .page-container {
@@ -99,7 +76,6 @@ body {
 }
 
 </style>
-<!-- akhir css -->
 
 </head>
 
@@ -107,41 +83,42 @@ body {
 
 <div class="page-container">
     <!-- kop surat atas -->
-<center>
-    <table>
-        <tr>
-            <td><img src="../../img/kop1.png" alt="PT.PPA" width="780" height="180"></td>
-        </tr>
-    </table>
-</center>
+    <center class="header-logo">
+        <table>
+            <tr>
+                <td class="gambar"><img src="../../img/kop1.png" alt="PT.PPA" width="780" height="180"></td>
+            </tr>
+        </table>
+    </center>
 
-<?php 
-$datasehat = mysqli_query($koneksi, "SELECT * FROM sehat WHERE idkaryawan='$idkaryawan' ");
-while ($ds = mysqli_fetch_array($datasehat)) {
-    
-?>
-<!-- isi surat ini masih menggunakan gabungan css didalam html -->
-<div class="centered-content">
-        <p class=MsoNormal align=center style='text-align:center;line-height:200%'><b><u>SURAT
+    <?php 
+    $datasehat = mysqli_query($koneksi, "SELECT * FROM sehat WHERE idkaryawan='$idkaryawan' ");
+    while ($ds = mysqli_fetch_array($datasehat)) {
+    ?>
+
+    <!-- tambahkan div container untuk teks -->
+    <div class="text-container">
+        <!-- isi surat ini masih menggunakan gabungan css didalam html -->
+        <div class="centered-content">
+           <p class=MsoNormal align=center style='text-align:center;line-height:200%'><b><u>SURAT
 </u></b><b><u><span lang=IN>KETERANGAN SEHAT</span></u></b></p>
 
-<p class=MsoNormal style='line-height:150%'><span lang=IN>Yang bertanda tangan
-dibawah ini :</span></p>
+<p class=MsoNormal style='line-height:150%'><span lang=IN> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  
+Yang bertanda tangan dibawah ini :</span></p>
 
-<p class=MsoNormal style='text-indent:.5in;line-height:150%'><span lang=IN>Nama               </span> 
+<p class=MsoNormal style='text-indent:.5in;line-height:150%'><span lang=IN>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;Nama               </span> 
   <span lang=IN>: </span> <?= $ds['dokter']; ?></p>
 
-<p class=MsoNormal style='text-indent:.5in;line-height:150%'><span lang=IN>Instansi  
+<p class=MsoNormal style='text-indent:.5in;line-height:150%'><span lang=IN>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Instansi  
          </span>    <span lang=IN>: </span> <?= $ds['klinik']; ?></p>
 
-<p class=MsoNormal style='text-indent:.5in;line-height:150%'><span lang=IN>No.
-Izin Klinik</span>    <span lang=IN>: </span> <?= $ds['izin_klinik']; ?></p>
+<p class=MsoNormal style='text-indent:.5in;line-height:150%'><span lang=IN>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;No. Izin Klinik</span>    <span lang=IN>: </span> <?= $ds['izin_klinik']; ?></p>
                 <?php 
                 $datakaryawan = mysqli_query($koneksi, "SELECT * FROM karyawan WHERE idkaryawan='$idkaryawan'");
                 while ($dk = mysqli_fetch_array($datakaryawan)) {
 
                 ?>
-                <p class=MsoNormal style='line-height:150%'><span lang=IN>Menerangkan bahwa</span> 
+                <p class=MsoNormal style='line-height:150%'><span lang=IN>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Menerangkan bahwa</span> 
                      :</p>
 
                 <table class=MsoTableGrid border=0 cellspacing=0 cellpadding=0 align=left
@@ -150,7 +127,7 @@ Izin Klinik</span>    <span lang=IN>: </span> <?= $ds['izin_klinik']; ?></p>
                 <tr>
                 <td style='border:none;padding:0in 0in 0in 0in' width=48><p class='MsoNormal'>&nbsp;</td>
                 <td width=108 valign=top style='width:80.75pt;padding:0in 5.4pt 0in 5.4pt'>
-                <p class=MsoNormal style='line-height:150%;border:none'><span lang=IN>Nama</span> </p>
+                <p class=MsoNormal style='line-height:150%;border:none'><span lang=IN>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Nama</span> </p>
                 </td>
                 <td width=30 valign=top style='width:22.5pt;padding:0in 5.4pt 0in 5.4pt'>
                 <p class=MsoNormal style='line-height:150%;border:none'>:</p>
@@ -165,7 +142,7 @@ Izin Klinik</span>    <span lang=IN>: </span> <?= $ds['izin_klinik']; ?></p>
                 <tr>
                 <td style='border:none;padding:0in 0in 0in 0in' width=48><p class='MsoNormal'>&nbsp;</td>
                 <td width=108 valign=top style='width:80.75pt;padding:0in 5.4pt 0in 5.4pt'>
-                <p class=MsoNormal style='line-height:150%;border:none'><span lang=IN>Tgl Lahir</span></p>
+                <p class=MsoNormal style='line-height:150%;border:none'><span lang=IN>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Tgl Lahir</span></p>
                 </td>
                 <td width=30 valign=top style='width:22.5pt;padding:0in 5.4pt 0in 5.4pt'>
                 <p class=MsoNormal style='line-height:150%;border:none'>:</p>
@@ -424,22 +401,26 @@ keterangan sehat ini dibuat untuk dapat dipergunakan sebagaimana mestinya.</span
   Perusahaan</b></p>
   </td>
  </tr>
- <?php 
-}
-?>
-</table>
+        </div>
+    </div>
+
+
+    <?php 
+    }
+    ?>
+    <!-- kop surat footer -->
+    <div class="footer-image">
+    <center>
+        <table>
+            <tr>
+                <td><img src="../../img/kop2.png" alt="PT.PPA" width="780" height="180" class="mt-4"></td>
+            </tr>
+        </table>
+    </center>
+</div>
+</div>
 
 <!-- akhir surat html -->
-
-<!-- kop surat footer -->
-<center>
-    <table>
-        <tr>
-            <td><img src="../../img/kop2.png" alt="PT.PPA" width="780" height="180" class="mt-4"></td>
-        </tr>
-    </table>
-</center>
-</div>
 
 <!-- js print -->
 <script>
