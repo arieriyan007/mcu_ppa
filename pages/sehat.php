@@ -23,7 +23,26 @@ include "../layouts/header.php";
                             <!-- button tambah karyawan -->
                             <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#mySurat" title="Tambah data karyawan">
                             <i class="far fa-envelope-open"></i> Surat baru
-                            </button> 
+                            </button>
+
+                             <!-- membuat fitur pencarian -->
+                             <form class="form-inline my-2 justify-content-center" >
+                              <div class="form-group">
+                                <select class="form-control" id="Kolom" name="Kolom" required="">
+                                  <?php
+                                    $kolom=(isset($_GET['Kolom']))? $_GET['Kolom'] : "";
+                                  ?>
+                                  <option value="idkaryawan" <?php if ($kolom=="idkaryawan") echo "selected"; ?>>NRP</option>
+                                </select>
+                              </div>
+                              <div class="form-group">
+                                <input type="text" class="form-control ml-2" id="KataKunci" name="KataKunci" placeholder="Kata kunci.." required="" value="<?php if (isset($_GET['KataKunci'])) echo $_GET['KataKunci']; ?>">
+                              </div>
+                              <button type="submit" class="btn btn-outline-primary ml-2">Cari</button>
+                              <a href="sehat.php" class="btn btn-outline-danger ml-1">Reset</a>
+                            </form> 
+                            <!-- akhir fitur pencarian --> 
+
                             <!-- panggil modal -->
                             <div class="modal fade" id="mySurat">
                               <div class="modal-dialog">
@@ -118,7 +137,16 @@ include "../layouts/header.php";
                                         <span class="input-group-text my-2">%</span>
                                       </div>
                                       <div class="input-group">
-                                        <input type="text" name="syarat" id="syarat" class="form-control my-2" placeholder="Persayaratan">
+                                        <input type="text" name="fisik" id="fisik" class="form-control my-2" placeholder="Pemeriksaan Fisik">
+                                      </div>
+                                      <div class="input-group">
+                                        <input type="text" name="bw" id="bw" class="form-control my-2" placeholder="Buta Warna">
+                                      </div>
+                                      <div class="input-group">
+                                        <input type="text" name="syarat" id="syarat" class="form-control my-2" placeholder="Persayaratan SEHAT atau TIDAK SEHAT">
+                                      </div>
+                                      <div class="input-group">
+                                        <input type="text" name="syarat2" id="syarat2" class="form-control my-2" placeholder="Untuk syarat kerja">
                                       </div>
                                       <label for="tgldaftar" class="mt-2">Tanggal Daftar :</label>
                                       <input type="date" class="form-control" name="tgldaftar" placeholder="tanggal dafar" >
@@ -141,7 +169,8 @@ include "../layouts/header.php";
                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                     <thead>
                                         <tr>
-                                            <th>NIP</th>
+                                            <th>No</th>
+                                            <th>NRP</th>
                                             <th>Nama</th>
                                             <th>Instansi</th>
                                             <th>Alamat</th>
@@ -154,9 +183,25 @@ include "../layouts/header.php";
                                     
                                     <tbody>
                                       <?php
+                                       // memasukkan logika dalam pencarian (pagination)
+                                       $page           =(isset($_GET['page']))? (int) $_GET['page'] : 1;
+                                       $kolomCari      =(isset($_GET['Kolom']))? $_GET['Kolom'] : "";                                   
+                                       $kolomKataKunci =(isset($_GET['KataKunci']))? $_GET['KataKunci'] : "";
+ 
+                                       // jumlah data perhalaman
+                                       $limit = 10;
+                                       $limitStart = ($page - 1) * $limit;
                                       // $no = 1; 
-                                      $data = mysqli_query($koneksi, "SELECT * FROM sehat s, karyawan k WHERE k.idkaryawan = s.idkaryawan ORDER BY idsehat DESC");
-                                      while ($s = mysqli_fetch_array($data)) {
+
+                                      // kondisi jika parameter kosong
+                                      if ($kolomCari=="" && $kolomKataKunci=="") {
+                                        $SqlQuery = mysqli_query($koneksi, "SELECT * FROM sehat s, karyawan k WHERE k.idkaryawan = s.idkaryawan ORDER BY idsehat DESC LIMIT ".$limitStart.",".$limit);
+                                      } else {
+                                        $SqlQuery = mysqli_query($koneksi, "SELECT * FROM sehat s, karyawan k WHERE k.idkaryawan=s.idkaryawan ORDER BY idsehat DESC $kolomCari LIKE '%$kolomKataKunci%' LIMIT ".$limitStart.",".$limit);
+                                      }
+                                      $no = $limitStart + 1; 
+                                      // $data = mysqli_query($koneksi, "SELECT * FROM sehat s, karyawan k WHERE k.idkaryawan = s.idkaryawan ORDER BY idsehat DESC");
+                                      while ($s = mysqli_fetch_array($SqlQuery)) {
                                         $idk    = $s['idkaryawan'];
                                         $id     = $s['id'];
                                         $nama   = $s['nama'];
@@ -170,6 +215,7 @@ include "../layouts/header.php";
                                       ?>
                                         <tr>
                                             
+                                            <td><?= $no++; ?></td>
                                             <td><?= $id; ?></td>
                                             <td><?= $nama; ?></td>
                                             <td><?= $inst; ?></td>
@@ -229,6 +275,94 @@ include "../layouts/header.php";
                                         ?>
                                     </tbody>
                                 </table>
+                                <!-- lanjutan pagination dipaling bawah -->
+                                <div class="d-flex justify-content-center">
+                                  <ul class="pagination">
+                                    <?php
+                                      // Jika page = 1, maka LinkPrev disable
+                                      if($page == 1){ 
+                                    ?>        
+                                      <!-- link Previous Page disable --> 
+                                      <li class="disabled"><a href="#">Previous</a></li>
+                                    <?php
+                                      }
+                                      else{ 
+                                        $LinkPrev = ($page > 1)? $page - 1 : 1;  
+
+                                        if($kolomCari=="" && $kolomKataKunci==""){
+                                        ?>
+                                          <li><a href="sehat.php?page=<?php echo $LinkPrev; ?>">Previous</a></li>
+                                    <?php     
+                                        }else{
+                                      ?> 
+                                        <li><a href="sehat.php?Kolom=<?php echo $kolomCari;?>&KataKunci=<?php echo $kolomKataKunci;?>&page=<?php echo $LinkPrev;?>">Previous</a></li>
+                                      <?php
+                                        } 
+                                      }
+                                    ?>
+
+                                    <?php
+                                      //kondisi jika parameter pencarian kosong
+                                      if($kolomCari=="" && $kolomKataKunci==""){
+                                        $SqlQuery = mysqli_query($koneksi, "SELECT * FROM sehat s, karyawan k WHERE k.idkaryawan = s.idkaryawan ORDER BY idsehat DESC");
+                                      }else{
+                                        //kondisi jika parameter kolom pencarian diisi
+                                        $SqlQuery = mysqli_query($koneksi, "SELECT * FROM sehat s, karyawan k WHERE k.idkaryawan = s.idkaryawan ORDER BY idsehat DESC $kolomCari LIKE '%$kolomKataKunci%'");
+                                      }     
+                                    
+                                      //Hitung semua jumlah data yang berada pada tabel karyawan
+                                      $JumlahData = mysqli_num_rows($SqlQuery);
+                                      
+                                      // Hitung jumlah halaman yang tersedia
+                                      $jumlahPage = ceil($JumlahData / $limit); 
+                                      
+                                      // Jumlah link number 
+                                      $jumlahNumber = 1; 
+
+                                      // Untuk awal link number
+                                      $startNumber = ($page > $jumlahNumber)? $page - $jumlahNumber : 1; 
+                                      
+                                      // Untuk akhir link number
+                                      $endNumber = ($page < ($jumlahPage - $jumlahNumber))? $page + $jumlahNumber : $jumlahPage; 
+                                      
+                                      for($i = $startNumber; $i <= $endNumber; $i++){
+                                        $linkActive = ($page == $i)? ' class="active"' : '';
+
+                                        if($kolomCari=="" && $kolomKataKunci==""){
+                                    ?>
+                                        <li<?php echo $linkActive; ?>><a href="sehat.php?page=<?php echo $i; ?>"><?php echo $i; ?></a></li>
+
+                                    <?php
+                                      }else{
+                                        ?>
+                                        <li<?php echo $linkActive; ?>><a href="sehat.php?Kolom=<?php echo $kolomCari;?>&KataKunci=<?php echo $kolomKataKunci;?>&page=<?php echo $i; ?>"><?php echo $i; ?></a></li>
+                                        <?php
+                                      }
+                                    }
+                                    ?>
+                                    
+                                    <!-- link Next Page -->
+                                    <?php       
+                                    if($page == $jumlahPage){ 
+                                    ?>
+                                      <li class="disabled"><a href="#">Next</a></li>
+                                    <?php
+                                    }
+                                    else{
+                                      $linkNext = ($page < $jumlahPage)? $page + 1 : $jumlahPage;
+                                    if($kolomCari=="" && $kolomKataKunci==""){
+                                        ?>
+                                          <li><a href="sehat.php?page=<?php echo $linkNext; ?>">Next</a></li>
+                                    <?php     
+                                        }else{
+                                      ?> 
+                                        <li><a href="sehat.php?Kolom=<?php echo $kolomCari;?>&KataKunci=<?php echo $kolomKataKunci;?>&page=<?php echo $linkNext; ?>">Next</a></li>
+                                    <?php
+                                      }
+                                    }
+                                    ?>
+                                  </ul>
+                                  <!-- akhir pagination -->
                             </div>
             </div>
           </div>

@@ -34,6 +34,7 @@ include "../layouts/header.php";
                                   ?>
                                   <option value="Nama" <?php if ($kolom=="nama") echo "selected"; ?>>Nama</option>
                                   <option value="jk" <?php if ($kolom=="jk") echo "selected";?>>Jenis Kelamin</option>
+                                  <option value="id" <?php if ($kolom=="id") echo "selected";?>>NRP</option>
                                 </select>
                               </div>
                               <div class="form-group">
